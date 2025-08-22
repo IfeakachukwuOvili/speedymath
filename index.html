@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Quiz Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="center-outer">
+  <div id="arcade-wrapper">
+    <!-- Stats & Timers Panel -->
+    <div id="stats-panel">
+        <div id="username-panel">User: <span id="username">Guest</span></div>
+
+        <div id="score-panel">
+            <span>Score: <span id="score">0</span></span> |
+            <span>Best: <span id="high-score">0</span></span>
+        </div>
+        <div id="attempts-panel">
+            <span>Correct: <span id="correct">0</span></span> |
+            <span>Failed: <span id="failed">0</span></span>
+        </div>
+        <div id="timers-panel">
+            <span>Game: <span id="game-timer">60</span>s</span> |
+            <span>Question: <span id="question-timer">10</span>s</span>
+        </div>
+    </div>
+
+    <div id="game-container">
+        <!-- Maze/Smiley Area with Question Above -->
+        <div id="maze-section">
+            <div id="question" class="maze-question">Question will appear here</div>
+            <div id="stickman">🙂</div>
+        </div>
+        <!-- Question & Input Area (now only input) -->
+        <div id="question-section">
+            <div id="input-area">
+                <input type="text" id="answer" placeholder="Enter your answer">
+            </div>
+            <div id="number-pad">
+                <div class="pad-row">
+                    <button class="num-button">1</button>
+                    <button class="num-button">2</button>
+                    <button class="num-button">3</button>
+                </div>
+                <div class="pad-row">
+                    <button class="num-button">4</button>
+                    <button class="num-button">5</button>
+                    <button class="num-button">6</button>
+                </div>
+                <div class="pad-row">
+                    <button class="num-button">7</button>
+                    <button class="num-button">8</button>
+                    <button class="num-button">9</button>
+                </div>
+                <div class="pad-row">
+                    <button id="enter-button">Enter</button>
+                    <button class="num-button">0</button>
+                    <button id="delete-button">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<button id="delete-account-btn" style="margin: 36px auto 0 auto; display: block; background: #b22222; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; font-family: inherit; font-size: 0.95rem; cursor: pointer;">Delete Account</button>
+
+<div id="feedback"></div>
+<div id="correct-answer" style="display:none;"></div>
+<div id="game-over">Game Over</div>
+
+<!-- Add audio elements for sound effects -->
+<audio id="ding-sound" src="ding.mp3" preload="auto"></audio>
+<audio id="buzz-sound" src="buzz.mp3" preload="auto"></audio>
+
+<script src="script.js"></script>
+
+</body>
+</html>

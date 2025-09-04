@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayQuestion() {
         questionElement.textContent = questions[currentQuestionIndex].question;
         answerInput.value = '';
-        answerInput.focus();
+        // Remove focus since input is readonly
         questionTimeLeft = 10;
         updateTimers();
     }
@@ -216,13 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- INPUT EVENTS ---
-    answerInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            checkAnswer();
-        } else if (event.key === 'Backspace') {
-            answerInput.value = answerInput.value.slice(0, -1);
-        }
-    });
+    // Remove keyboard events since input is readonly - only custom keyboard works
     numberButtons.forEach(button => {
         button.addEventListener('click', () => {
             answerInput.value += button.textContent;

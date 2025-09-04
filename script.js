@@ -11,13 +11,76 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- GAME STATE ---
-    const questions = [
-        { question: '2 + 2', answer: 4 },
-        { question: '5 - 3', answer: 2 },
-        { question: '3 * 3', answer: 9 },
-        { question: '10 / 2', answer: 5 }
-    ];
-    let currentQuestionIndex = 0;
+    let currentQuestion = null;
+    
+    // Question generator for 6th grade level
+    function generateRandomQuestion() {
+        const questionTypes = ['addition', 'subtraction', 'multiplication', 'division', 'square_root'];
+        const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+        
+        switch (type) {
+            case 'addition':
+                return generateAddition();
+            case 'subtraction':
+                return generateSubtraction();
+            case 'multiplication':
+                return generateMultiplication();
+            case 'division':
+                return generateDivision();
+            case 'square_root':
+                return generateSquareRoot();
+            default:
+                return generateAddition();
+        }
+    }
+    
+    function generateAddition() {
+        const a = Math.floor(Math.random() * 99) + 1; // 1-99
+        const b = Math.floor(Math.random() * 99) + 1; // 1-99
+        return {
+            question: `${a} + ${b}`,
+            answer: a + b
+        };
+    }
+    
+    function generateSubtraction() {
+        const a = Math.floor(Math.random() * 100) + 10; // 10-109
+        const b = Math.floor(Math.random() * (a - 1)) + 1; // 1 to (a-1), ensures positive result
+        return {
+            question: `${a} - ${b}`,
+            answer: a - b
+        };
+    }
+    
+    function generateMultiplication() {
+        const a = Math.floor(Math.random() * 12) + 1; // 1-12 (times tables)
+        const b = Math.floor(Math.random() * 12) + 1; // 1-12
+        return {
+            question: `${a} × ${b}`,
+            answer: a * b
+        };
+    }
+    
+    function generateDivision() {
+        const divisor = Math.floor(Math.random() * 12) + 1; // 1-12
+        const quotient = Math.floor(Math.random() * 12) + 1; // 1-12
+        const dividend = divisor * quotient; // Ensures whole number result
+        return {
+            question: `${dividend} ÷ ${divisor}`,
+            answer: quotient
+        };
+    }
+    
+    function generateSquareRoot() {
+        // Perfect squares suitable for 6th grade: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144
+        const perfectSquares = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144];
+        const square = perfectSquares[Math.floor(Math.random() * perfectSquares.length)];
+        const root = Math.sqrt(square);
+        return {
+            question: `√${square}`,
+            answer: root
+        };
+    }
     let correctCount = 0;
     let failedCount = 0;
     let score = 0;
@@ -85,7 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- GAME LOGIC ---
     function displayQuestion() {
-        questionElement.textContent = questions[currentQuestionIndex].question;
+        currentQuestion = generateRandomQuestion();
+        questionElement.textContent = currentQuestion.question;
         answerInput.value = '';
         // Remove focus since input is readonly
         questionTimeLeft = 10;
@@ -136,17 +200,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function checkAnswer(timeout = false) {
-        if (!gameActive) return;
+        if (!gameActive || !currentQuestion) return;
         const userAnswer = parseInt(answerInput.value);
-        const correct = questions[currentQuestionIndex].answer;
+        const correct = currentQuestion.answer;
         if (!timeout && userAnswer === correct) {
             showFeedback('✔', 'green');
             dingSound.play();
             correctCount++;
             score += 10;
-            currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
             updateStats();
-            displayQuestion();
+            displayQuestion(); // Generate new random question
             resetQuestionTimer();
         } else {
             showFeedback('✘', 'red');
@@ -155,8 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateStats();
             showCorrectAnswer(correct);
             setTimeout(() => {
-                currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
-                displayQuestion();
+                displayQuestion(); // Generate new random question
                 resetQuestionTimer();
             }, 1500);
         }
@@ -169,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         correctCount = 0;
         failedCount = 0;
         score = 0;
-        currentQuestionIndex = 0;
+        currentQuestion = null;
         gameTimeLeft = 60;
         questionTimeLeft = 10;
         updateStats();
